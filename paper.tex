@@ -41,7 +41,7 @@
   set of algebraic structures (Boolean algebra, Naperian and foldable
   functors). We reveal that these ciphers exhibit some interesting
   compositional structure at the type-level, which enables systematic
-  code transformation, known in the cryptographical folklore as
+  code transformation, known in the cryptographic folklore as
   ``bitslicing'' and ``fixslicing''. Our work rests on a Coq
   development providing the specification of two ciphers, Skinny and
   Gift, deriving a bitsliced and fixsliced implementation for each and
@@ -164,10 +164,9 @@ harder~\citep{bernstein:something-up-my-sleeves}). For example, the
 diffusion layer of the AES standard is based on the usual
 multiplicative inverse over the finite field induced by an
 innocent-looking polynomial. To support such design, the state of
-modern ciphers is thus equipped with some matricial structure
-(oftentimes, manipulated as a 2D or 3D array of bits): the cipher is
-not specified over a flat sequence of individual bits but over a
-n-dimensional array of bits.
+modern ciphers operate over a certain matrix (oftentimes, a 2D or 3D
+array of bits): the cipher is not specified over a flat sequence of
+individual bits but over a n-dimensional array of bits.
 
 %% ** designed for high-throughput execution in software 
 %% *** -> parallel execution
@@ -257,7 +256,7 @@ The present work is but the beginning of our research program. We
 shall focus \emph{exclusively} on the semantics aspects, only briefly
 touching upon implementation aspects (which remain the raison d'être
 of the project!). Our experience designing the Usuba~\citep{mercadier:PhD}
-programmign language and implementing its compiler gives us some
+programming language and implementing its compiler gives us some
 confidence that a syntax can indeed be tailored to suit this
 semantics.
 
@@ -265,7 +264,7 @@ We nonetheless could not resist the temptation of developing the
 semantics in the Coq theorem prover, as executable programs. After
 all, we are interested in combinational circuits: if there has ever
 been a time where we do not have to worry about termination, this is
-it! So we have implemented cryptographical primitive in pure Gallina.
+it! So we have implemented cryptographic primitive in pure Gallina.
 This is nothing to worry about: after all, more ambitious colleagues
 went from there down to deeply-embedded assembly
 code~\citep{chlipala:coq-crypto}. Besides the ability to prove the
@@ -294,7 +293,7 @@ on the specification, bitslicing and fixslicing of the Skinny
 cipher~\citep{beierle:skinny, adomnicai:fixslicing-AES-like}. The
 latter worked on the specification, bitslicing and fixslicing of the
 Gift cipher~\citep{subhadeep:gift, adominicai:fixslicing-gift}. Both
-ciphers are provided in the aaccompanying source
+ciphers are provided in the accompanying source
 code~\footnote{\url{https://github.com/pedagand/bitfix}}. For clarity,
 we shall focus exclusively on Skinny as our running example here.
 
@@ -754,7 +753,7 @@ generic notion of reindexing~\citep{gibbons:apl}:
 
 Operationally, reindexing effects a change of the iteration order of
 the composed data container: we go from supporting iteration over
-\coqe!G! within an external iteration over \coqe!F! to an interation
+\coqe!G! within an external iteration over \coqe!F! to an iteration
 over \coqe!F! within an external iteration over \coqe!G!.
 
 %% ** derived: systematic "orthogonalization" process
@@ -814,11 +813,11 @@ invariant. A single round of the cipher thus becomes:
 %% *** -> next step: make it go away
 %% *** (mind-blowing trick)
 
-Considering (very carefully!) the instanciations of \coqe!subcells_!,
+Considering (very carefully!) the instances of \coqe!subcells_!,
 \coqe!add_round_key_! and \coqe!psi_! (which is part of
 \coqe!mixcolumns_!), we check that these can be efficiently
 implemented over machine words: they only involve boolean operations,
-applied bitwise over \coqe!reg32!.
+applied bit-wise over \coqe!reg32!.
 
 Unfortunately, \coqe!shiftrows_! and \coqe!Rows.ror! involve some very
 fiddly and computationally costly bit twiddling. These amount to
@@ -869,7 +868,7 @@ machine words
 
 Indeed, aside from the logical operations, the rotations are in fact
 almost free thanks to the \textsc{Arm} Cortex barrel
-shifters.\footnote{By this remark, we hope to have established our
+shifter.\footnote{By this remark, we hope to have established our
 credentials as budding cryptographers.}
 
 %% * Propagating phi
@@ -888,7 +887,7 @@ is that, after only 4 steps, \coqe!phi_! is almost an identity.
   %
   \coqfrom{Skinny/Base}{tau}
   %
-  and can be implemented reasonnably efficiently.
+  and can be implemented reasonably efficiently.
 \end{prop}
 
 In typical mode of operation, Skinny will perform between 32 and 56
@@ -975,7 +974,7 @@ and they correspond to the diffusion layers absorbing that many
 
 Given 4 (suitably generated) round subkeys, we merely have to chain 4
 rounds with the corresponding diffusion layer, ending with \coqe!tau_!
-to resynchronize back to identity
+to re-synchronize back to identity
 %
 \coqfrom{Skinny/Fixslice}{round}
 
@@ -985,7 +984,7 @@ to resynchronize back to identity
 %% ** fixsliced keys are organized in packs of 4
 %% *** <- suitably pre-transformed with iter n inv_phi
 
-The correctness statemement is unsurprising, modulo some light
+The correctness statement is unsurprising, modulo some light
 bureaucracy to ensure that round subkeys have been suitably generated
 %
 \begin{theo}
