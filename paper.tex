@@ -692,10 +692,11 @@ a terrible waste of memory bandwidth and register usage.
 We must therefore look toward adopting a \emph{packed} representation,
 grouping individual booleans into a single machine word. Doing so
 would improve memory density. However, we have to be very careful that
-we can still efficiently compute over this packed representation. In
-effect, for \Skinny{} and \Gift{}, this is not quite true: we will have to
-wait until Section~\ref{sec:fixslicing}, which operates on the same
-data representation, to have our cake and eat it too.
+we can still efficiently compute over this packed representation. As
+it turns out, for \Skinny{} and \Gift{}, we will not achieve this just
+now: we will have to wait until Section~\ref{sec:fixslicing}, which
+operates on the same data representation, to have our cake and eat it
+too.
 
 %% * Remark: AoS vs. SoA
 %% ** /> bit level
