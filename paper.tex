@@ -545,8 +545,8 @@ The second half corresponds to a combinational circuit \coqe!psi_!
 %
 which exercises the Naperian structure of \coqe!Rows.T! together with
 the underlying Boolean algebra. This is followed by a right rotation
-of rows. Altogether, this defines the \coqe!mixcolumns_! operation
-depicted in Figure~\ref{fig:mixcolumns}
+of rows. Altogether, this defines the \coqe!mixcolumns_! operation,
+depicted in Figure~\ref{fig:mixcolumns}:
 %
 \coqfrom{Skinny/Base}{mixcolumns}
 
@@ -584,19 +584,19 @@ This leads to the following definitions:
 
 %% * Application: subcells
 
-At the heart of this layer stands the substitution box \coqe!s8!,
-which is just another combinational circuit (Figure~\ref{fig:s8}):
+At the heart of this layer stands the substitution box \coqe!s8!
+(Figure~\ref{fig:s8}), which is just another combinational circuit:
 %
 \coqfrom{Skinny/Base}{s8}
 
 These building blocks are chained together to form the confusion
-layer, \coqe!subcells!:
+layer, \coqe!subcells_!:
 %
 \coqfrom{Skinny/Base}{subcells}
 
 \begin{figure}
   \centering
-  \includegraphics[draft=false,height=5cm]{s8}
+  \includegraphics[draft=false,width=.75\textwidth]{s8}
   \caption{Substitution box S8 (from~\citet{beierle:skinny})}
   \label{fig:s8}
 \end{figure}
@@ -677,7 +677,7 @@ If we were to adopt \coqe!state! as our actual representation, the
 memory usage of the resulting program would quite poor. It would take
 at least 128 bytes to store that many bits (assuming that booleans are
 stored in the smallest addressable memory size, a byte). This would be
-a terrible waste of memory bandwidth and very poor register usage.
+a terrible waste of memory bandwidth and register usage.
 
 %% * Packed representation
 %%   -> improve memory density
