@@ -1093,8 +1093,8 @@ correctness theorems hide a somewhat surprising secret: all the proofs
 were obtained by \coqe!vm_compute; congruence!. Having defined
 \coqe!Rows.T!, \coqe!Cols.T!, \coqe!Slice4.T! and \coqe!Slice8.T! as
 records with primitive projections, all the identities boil down to
-the specification, bitsliced forms and fixsliced forms to have the
-same $\beta$-normal $\eta$-long form through the suitable equivalence
+the specification, bitsliced forms and fixsliced forms having the
+same $\beta$-normal $\eta$-long form through the equivalence
 relation!
 
 %% * Future work
@@ -1112,15 +1112,15 @@ relation!
 As part of future work, we intend to extend our formalization to
 bridge the gap to machine word. Once again, we expect parametricity to
 kick in: we currently have an implementation defined over \coqe!reg32!
-(and its supporting operations) which we intend to be equivalent to an
+(and its supporting operations) which ought to be equivalent to an
 implementation defined over the type of 32 bits machine words (and its
 supporting operations).
-
+%
 We also wish to pursue the automated generation of fixsliced code,
 eventually implementing a proper simplification engine. In the
 process, we ought to develop methods to check for commutativity of the
 diffusion layer.
-
+%
 A litmus test to this project will be our ability to deliver a
 fixsliced implementation of \AES{}: mark our machine words!
 
