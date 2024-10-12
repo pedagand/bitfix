@@ -4,6 +4,7 @@
 \usepackage{lstcoq}
 \usepackage[numbers]{natbib}
 \usepackage{enumitem}
+\usepackage{subcaption}
 
 % Numéro et année des JFLAs visées par l'article, obligatoire.
 \jfla{36}{2025}
@@ -40,11 +41,11 @@
   set of algebraic structures (Boolean algebra, Naperian and foldable
   functors). We reveal that these ciphers exhibit some interesting
   compositional structure at the type-level, which enables systematic
-  code transformation, such as bitslicing and fixslicing. Our work
-  rests on a Coq development providing the specification of two
-  ciphers, Skinny and Gift, deriving a bitsliced and fixsliced
-  implementation for each and proving their correctness with respect
-  to their specifications.
+  code transformation, known in the cryptographical folklore as
+  ``bitslicing'' and ``fixslicing''. Our work rests on a Coq
+  development providing the specification of two ciphers, Skinny and
+  Gift, deriving a bitsliced and fixsliced implementation for each and
+  proving their correctness with respect to their specifications.
 
 \end{abstract}
 
@@ -287,7 +288,7 @@ on the specification, bitslicing and fixslicing of the Skinny
 cipher~\citep{skinny-spec, adomin:skinny}. The latter worked on the
 specification, bitslicing and fixslicing of the Gift
 cipher~\citep{gift-spec, admon:gift}. Both ciphers are provided in the
-aaccompanying source code~\footnote{\url{TODO}}. For clarity, we shall
+aaccompanying source code~\footnote{\url{https://github.com/pedagand/bitfix}}. For clarity, we shall
 focus exclusively on Skinny as our running example here.
 
 Note that none of the programs below were easy to write in the first
@@ -346,7 +347,9 @@ Section~\ref{sec:bitslicing} when it comes to producing a
 memory-efficient representation.
 
 \begin{figure}
-  %\includegraphics{skinny_state}
+  \begin{center}
+    \includegraphics[draft=false,height=5cm]{skinny_state}
+  \end{center}
   \caption{Skinny state matrix}
   \label{fig:state}
 \end{figure}
@@ -532,11 +535,19 @@ of rows. Altogether, this defines the operation depicted in Figure~\ref{fig:mixc
 \coqfrom{Skinny/Base}{mixcolumns}
 
 \begin{figure}[htp]
-  \caption{Shiftrows}
-  \label{fig:shiftrows}
-
-  \caption{Mixcolumns}
-  \label{fig:mixcolumns}
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[draft=false,height=2.8cm]{shiftrows}
+    \caption{Shiftrows (from~\citet{skinny-spec})}
+    \label{fig:shiftrows}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[draft=false,height=2.8cm]{mixcolumns}
+    \caption{Mixcolumns (from~\citet{skinny-spec})}
+    \label{fig:mixcolumns}
+  \end{subfigure}
 \end{figure}
 
 \subsection{Confusion}
@@ -568,8 +579,9 @@ layer, \coqe!subcells!:
 \coqfrom{Skinny/Base}{subcells}
 
 \begin{figure}
-
-  \caption{S8}
+  \centering
+  \includegraphics[draft=false,height=5cm]{s8}
+  \caption{Substitution box S8 (from~\citet{skinny-spec})}
   \label{fig:s8}
 \end{figure}
 
