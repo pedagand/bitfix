@@ -8,3 +8,6 @@ paper.pdf: paper.tex paper.bib
 	bibtex paper
 	pdflatex paper.tex
 	pdflatex paper.tex
+
+clean:
+	rm paper.pdf
