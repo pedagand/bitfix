@@ -703,7 +703,7 @@ our cake and eat it too (using the \emph{same} data representation).
 Bitslicing is the cryptographer's jargon for such a representation
 change. In the case of \Skinny{}, we observe that only \coqe!shiftrows_!
 imposes a strict composition order of \coqe!Rows.T! followed by
-\coqe!Cols.T!. Aside from that, we can commute \coqe!Slice8.T! out the
+\coqe!Cols.T!. Aside from that, we can commute \coqe!Slice8.T! out of the
 composition. We would thus have the type \coqe!Rows.T (Cols.T bool)!
 representing 16 bits and fitting snugly in a 32 bits machine word. The
 overall composition \coqe!Slice8.T (Rows.T (Cols.T bool))! would take
