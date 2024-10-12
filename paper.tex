@@ -958,7 +958,11 @@ the layer:
 This means that, in turn, the subsequent diffusion layer will have to
 absorb two \coqe!phi_! steps. We thus generalize our statement for any
 number of \coqe!phi_! steps, the previous statement corresponding to
-the case $n = 1$. There are 4 relativized diffusion layers, namely
+the case $n = 1$:
+%
+\coqfrom{Skinny/Fixslice}{mixcolumns_mod}
+
+Ultimately, there are only 4 relativized diffusion layers, namely
 %
 \coqe!mixcolumns_mod 0!,
 %
@@ -969,8 +973,6 @@ the case $n = 1$. There are 4 relativized diffusion layers, namely
 and
 %
 \coqe!mixcolumns_mod 3!
-%
-\coqfrom{Skinny/Fixslice}{mixcolumns_mod}
 %
 and they correspond to the diffusion layers absorbing that many
 \coqe!phi_! steps:
@@ -997,7 +999,7 @@ to re-synchronize back to identity
 %% *** <- suitably pre-transformed with iter n inv_phi
 
 The correctness statement is unsurprising, modulo some light
-bureaucracy to ensure that round subkeys have been suitably generated
+bureaucracy to ensure that round subkeys are in the right format
 %
 \begin{theo}
   \coqfrom{Skinny/FixsliceProof}{theorem}
@@ -1007,7 +1009,7 @@ The meat of the proof consists in, as for bitslicing, generalizing
 this statement to a relational one. With fixslicing, there are in fact
 4 relations, depending on the number of \coqe!phi_! steps accumulated.
 We move from one to the next every time we go through a diffusion
-layer, eventually resetting from 3 to 0.
+layer, resetting from the last to the first every 4 steps.
 
 %% * Actual implementation of mixcolumn_mod (1 + n)?
 
@@ -1024,16 +1026,17 @@ layer, eventually resetting from 3 to 0.
 The definitions of \coqe!mixcolumn_mod! is somewhat disappointing: we
 would be hard-pressed to make any precise claim about the potentiality
 of an efficient implementation. The current form is symbolically
-useful, as it allows us to easily the correctness of fixslicing.
+useful, as it allows us to easily prove the correctness of fixslicing.
 However, it remains a mathematical specification, not a piece of
-software. In effect, we are looking for an open term expressed in the
+software. In effect, we are now looking for a closed expression in the
 language of Boolean algebras (\coqe!xor!, \etc{}), Naperian operations
 (\coqe!init!, \coqe!lookup!) and foldable operations (more precisely,
 \coqe!ror! and \coqe!rol!).
 
-One solution\footnote{Needless to say, we actually started off with
-the answers, kindly provided by~\citet{adominicai:fixslicing-gift}, and crawled our way
-back to see if an alternative approach would be feasible.}, which
+One solution\footnote{Needless to say, in practice, we actually
+started off from the simplified implementation, kindly provided
+by~\citet{adominicai:fixslicing-gift}, and then used Coq to
+understand how these solutions could have been derived.}, which
 consists in using Coq as a term rewriting engine, is to postulate the
 existence of such an explicit form, let us call it
 %
@@ -1049,8 +1052,8 @@ equational theory. To do so, we orient the equational theory in a
 rewrite database and apply the \coqe!autosubst! tactics to obtain
 simplified forms. Similarly, we retrieve convenient \coqe!let! forms
 thanks to the \coqe!set (ident := term)! tactics. We are then left
-with reading off the actual definition of
-\coqe!mixcolumns_mod_explicit!.
+with reading off the definition of \coqe!mixcolumns_mod_explicit! from
+the proof goal.
 
 
 
