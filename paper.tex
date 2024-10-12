@@ -259,7 +259,7 @@ shall focus \emph{exclusively} on the semantics aspects, only briefly
 touching upon implementation aspects (which remain the raison d'être
 of the project!). Our experience designing the Usuba~\citep{mercadier:PhD}
 programming language and implementing its compiler gives us some
-confidence that a syntax can indeed be tailored to suit this
+confidence that a syntax can indeed be tailored to dress up this
 semantics.
 
 We nonetheless could not resist the temptation of developing the
@@ -272,9 +272,9 @@ went from there down to deeply-embedded assembly
 code~\citep{chlipala:coq-crypto}. Besides the ability to prove the
 correctness and, even more usefully, test our code, this also enables
 us to easily prototype a fixslicing compiler, using Coq's
-\texttt{autorewrite} tactics to emulate a transformation-based simplification
-engine~\citep{peyton-jones:haskell-optim} (part of an imaginary optimizing
-compiler).
+\texttt{autorewrite} tactics to emulate a transformation-based
+simplification engine~\citep{peyton-jones:haskell-optim} (as part of
+an imaginary optimizing compiler).
 
 
 %% * Internship work
@@ -296,17 +296,17 @@ cipher~\citep{beierle:skinny, adomnicai:fixslicing-AES-like}. The
 latter worked on the specification, bitslicing and fixslicing of the
 Gift cipher~\citep{subhadeep:gift, adominicai:fixslicing-gift}. Both
 ciphers are provided in the accompanying source
-code~\footnote{\url{https://github.com/pedagand/bitfix}}. For clarity,
+code\footnote{\url{https://github.com/pedagand/bitfix}}. For clarity,
 we shall focus exclusively on Skinny as our running example here.
 
 Note that none of the programs below were easy to write in the first
 place: it took weeks of careful study to weed out the essential
 complexity from the accidental mismanagement of array indices. If the
 code seem somewhat trivial, one should bear in mind that this
-simplicity was hard-won. All the more reason to, another day, design a
-programming language, so as to automatically inhabit this semantics,
-and write its compiler, so as to automatically optimize code following
-our theorems.
+simplicity was hard-won. All the more reason to, some other day,
+design a programming language, so as to automatically inhabit this
+semantics, and write its compiler, so as to automatically optimize
+code following our theorems.
 
 \section{Functional specification}
 \label{sec:spec}
