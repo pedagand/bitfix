@@ -29,6 +29,11 @@
 \newcommand{\ie}{\textit{i.e.}}
 \newcommand{\etc}{\textit{etc.}}
 
+\newcommand{\Skinny}{\textsc{Skinny}}
+\newcommand{\Gift}{\textsc{Gift}}
+\newcommand{\AES}{\textsc{Aes}}
+\newcommand{\DES}{\textsc{Des}}
+
 \begin{document}
 
 \maketitle
@@ -43,8 +48,8 @@
   compositional structure at the type-level. This enables systematic
   code transformation, known in the cryptographic folklore as
   ``bitslicing'' and ``fixslicing''. Our work rests on a Coq
-  development providing the specification of two ciphers, Skinny and
-  Gift, deriving a bitsliced and fixsliced implementation for each and
+  development providing the specification of two ciphers, \Skinny{} and
+  \Gift{}, deriving a bitsliced and fixsliced implementation for each and
   proving their correctness with respect to their specifications.
 
 \end{abstract}
@@ -157,12 +162,12 @@ access based on the secret data, leaving only register spilling.
 %% *** in particular: no-trick-up-my-sleeves Sbox
 %% ** operate over bit-level n-dimensional array
 
-Following the NSA involvement in the design of the DES diffusion
+Following the NSA involvement in the design of the \DES{} diffusion
 layer~\citep{johnson:cold-war-crypto}, cryptographers have been
 advocating for ``nothing-up-my-sleeve'' designs (which does not make
 magic tricks impossible, just
 harder~\citep{bernstein:something-up-my-sleeves}). For example, the
-diffusion layer of the AES standard is based on the usual
+diffusion layer of the \AES{} standard is based on the usual
 multiplicative inverse over the finite field induced by an
 innocent-looking polynomial. To support such design, the state of
 modern ciphers operate is taken to represent a certain matrix
@@ -291,13 +296,13 @@ an imaginary optimizing compiler).
 
 This article grew out of the Bachelor's research project of the first
 author and the Master thesis of the second author. The former worked
-on the specification, bitslicing and fixslicing of the Skinny
+on the specification, bitslicing and fixslicing of the \Skinny{}
 cipher~\citep{beierle:skinny, adomnicai:fixslicing-AES-like}. The
 latter worked on the specification, bitslicing and fixslicing of the
-Gift cipher~\citep{subhadeep:gift, adominicai:fixslicing-gift}. Both
+\Gift{} cipher~\citep{subhadeep:gift, adominicai:fixslicing-gift}. Both
 ciphers are provided in the accompanying source
 code\footnote{\url{https://github.com/pedagand/bitfix}}. For clarity,
-we shall focus exclusively on Skinny as our running example here.
+we shall focus exclusively on \Skinny{} as our running example here.
 
 Note that none of the programs below were easy to write in the first
 place: it took weeks of careful study to weed out the essential
@@ -315,8 +320,8 @@ code following our theorems.
 %% ** Operational description
 %% ** Non-optimized reference implementation
 
-In this section, we intend to give a specification for the cipher
-Skinny, with an eye towards implementation. We shall therefore aim for
+In this section, we intend to give a specification for the \Skinny{}
+cipher, with an eye towards implementation. We shall therefore aim for
 a rather operational description, to give a sense of the computational
 cost of the cipher, without premature concern for implementation
 performance just yet.
@@ -331,7 +336,7 @@ performance just yet.
 As often in functional programming, it helps tremendously to first lay
 out the types our program will have to deal with. In our case, the
 focal point is the \emph{state} of the cipher, which is specified as a
-3-dimensional array (Figure~\ref{fig:state}). We model each dimension
+3-dimensional matrix (Figure~\ref{fig:state}). We model each dimension
 in turn through a dedicated type constructor:
 %
 \begin{itemize}[nosep]
@@ -347,7 +352,7 @@ The cube drawn in Figure~\ref{fig:state} could just be modeled as
 %
 \coqe!Slice8.T (Rows.T (Cols.T bool))!,
 %
-or any other composition of these 3 type formers. They are all
+or any other composition of these 3 type constructors. They are all
 isomorphic to a sequence of 128 bits. We shall wait until
 Section~\ref{sec:assembling} to settle on the most natural
 representation for our specification effort. We revisit this choice in
@@ -358,7 +363,7 @@ memory-efficient representation.
   \begin{center}
     \includegraphics[draft=false,height=5cm]{skinny_state}
   \end{center}
-  \caption{Skinny state matrix}
+  \caption{\Skinny{} state matrix}
   \label{fig:state}
 \end{figure}
 
@@ -490,8 +495,8 @@ elements as \coqe!Cols.T! through the following construction:
 
 Note that, since they actually have the same number of elements, we
 could also go the other way around, defining an inhabitant of
-\coqe!Cols.T Rows.Ix!. We do not need this construction for Skinny. It
-is necessary in the case of Gift, which proceeds by transposition of
+\coqe!Cols.T Rows.Ix!. We do not need this construction for \Skinny{}. It
+is necessary in the case of \Gift{}, which proceeds by transposition of
 $4 \times 4$ matrix.
 
 %% * Foldable: left-to-right iteration
@@ -602,7 +607,7 @@ layer, \coqe!subcells!:
 %% *** /> not necessarily efficient implementation
 %% *** -> see sec:bitslicing
 
-A round of Skinny is obtained by composing the following operations in
+A round of \Skinny{} is obtained by composing the following operations in
 this particular order:
 %
 \begin{enumerate}
@@ -686,7 +691,7 @@ We must therefore look toward adopting a \emph{packed} representation,
 grouping individual booleans into a single machine word. Doing so
 would improve memory density. However, we have to be very careful that
 we can still efficiently compute over this packed representation. In
-effect, for Skinny and Gift, this is not quite true: we will have to
+effect, for \Skinny{} and \Gift{}, this is not quite true: we will have to
 wait until Section~\ref{sec:fixslicing}, which operates on the same
 data representation, to have our cake and eat it too.
 
@@ -694,7 +699,7 @@ data representation, to have our cake and eat it too.
 %% ** /> bit level
 
 Bitslicing is the cryptographer's jargon for such a representation
-change. In the case of Skinny, we observe that only \coqe!shiftrows_!
+change. In the case of \Skinny{}, we observe that only \coqe!shiftrows_!
 imposes a strict composition order of \coqe!Rows.T! followed by
 \coqe!Cols.T!. Aside from that, we can commute \coqe!Slice8.T! out the
 composition. We would thus have the type \coqe!Rows.T (Cols.T bool)!
@@ -825,7 +830,7 @@ Unfortunately, \coqe!shiftrows_! and \coqe!Rows.ror! involve some very
 fiddly and computationally costly bit twiddling. These amount to
 performing bit-level permutations within a machine word. This is a
 frequent pain point when bitslicing the diffusion layer of ciphers: it
-is also true in the case of Gift and AES, for instance. In the next
+is also true in the case of \Gift{} and \AES{}, for instance. In the next
 section, we present this one weird trick to get permutations to nearly
 vanish.
 
@@ -838,11 +843,11 @@ vanish.
 %% ** machine word supported then bit-level
 %% ** push and accumulate bit-level across code
 
-Studying the Gift cipher, \citet{adominicai:fixslicing-gift} noticed that the
+Studying the \Gift{} cipher, \citet{adominicai:fixslicing-gift} noticed that the
 permutation layer can be decompose into, first, a transformation that
 can be efficiently implemented within a register and, second, a
 permutation that commutes with the other layers (confusion and key
-mixing). Similarly, the diffusion layer of Skinny can be decomposed as
+mixing). Similarly, the diffusion layer of \Skinny{} can be decomposed as
 follows
 %
 \begin{prop}
@@ -892,7 +897,7 @@ is that, after only 4 steps, \coqe!phi_! is almost an identity.
   and can be implemented reasonably efficiently.
 \end{prop}
 
-In typical mode of operation, Skinny will perform between 32 and 56
+In typical mode of operation, \Skinny{} will perform between 32 and 56
 rounds. Being able to accumulate \coqe!phi_! across chunks of 4
 iterations, we can effectively make them disappear, leaving only a
 \coqe!tau_! step every four iterations.
@@ -1048,7 +1053,7 @@ with reading off the actual definition of
 
 We have thus completed our journey toward a rationalized treatment of
 bitslicing and fixslicing in their quintessential form, taking the
-Skinny cipher as our running example.
+\Skinny{} cipher as our running example.
 %
 %% * Other applicative: Gift
 %% ** Specification: only thinking: Rows.T Cols.T Slice4.T bool
@@ -1058,9 +1063,9 @@ Skinny cipher as our running example.
 %% *** cancel out after 4
 %% *** -> simpler
 %
-We have similarly treated the Gift cipher, whose design is in fact at
+We have similarly treated the \Gift{} cipher, whose design is in fact at
 the origin of the fixslicing
-technique~\citep{adominicai:fixslicing-gift}. Gift is specified in
+technique~\citep{adominicai:fixslicing-gift}. \Gift{} is specified in
 terms of the composition
 %
 \coqe!Rows.T (Cols.T (Slice4.T bool))!
@@ -1110,7 +1115,7 @@ process, we ought to develop methods to check for commutativity of the
 diffusion layer.
 
 A litmus test to this project will be our ability to deliver a
-fixsliced implementation of AES: mark our machine words!
+fixsliced implementation of \AES{}: mark our machine words!
 
 \bibliographystyle{unsrtnat}
 \bibliography{paper}
