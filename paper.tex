@@ -244,7 +244,7 @@ The present article can thus be read as a case-study in
 where the notion of functor comes from category theory (recalled in
 Section~\ref{sec:spec} and unrelated to the notion used in ML module
 systems). In effect, we forbid ourselves from programming over a
-concrete datastructure: instead, we rely on (categorical) functors,
+concrete data structure: instead, we rely on (categorical) functors,
 peppered with some more structure, so as to 1. unlock algebraic
 manipulation during compilation and 2. exploit parametricity for
 reasoning.
@@ -400,11 +400,11 @@ come equipped with their free theorems~\citep{reynolds:parametricity,
 %% * Objective: purely functional model
 %% ** rule of the game: "no i, no j"
 
-Having modeled the core data type, we now turn to modeling the cipher
+Having modeled the core data types, we now turn to modeling the cipher
 as a purely functional program. To stay clear from the temptation of
-array mismanagement, we will forbid ourselves from index arithmetic:
-no indexing an array-like structure by \coqe!i+1! or \coqe!j-i! in
-this paper!
+array mismanagement, we disallow index arithmetic altogether: no
+indexing an array-like structure by \coqe!i+1! or, even worse,
+\coqe!j-i! in this paper!
 
 \subsection{Key mixing}
 
@@ -414,10 +414,11 @@ this paper!
 %% *** for any commutative applicative functor F
 
 Much like $\lambda$ in functional programming, the exclusive-or
-features prominently in the cryptographic liturgy. In particular, it
-is instrumental to mix the derived keys during the ciphertext
-computation. For genericity, we model this layer as an operation
-defined over any Boolean algebra~\citep{givant:boolean-algebras}:
+$\oplus$ features prominently in the cryptographic liturgy. In
+particular, it is instrumental to mix the derived keys during
+ciphertext computation. For genericity, we model this layer as an
+operation defined over any Boolean
+algebra~\citep{givant:boolean-algebras}:
 %
 \coqfrom{Skinny/Base}{addroundkey}
 
@@ -449,17 +450,17 @@ indices as the logarithm of an exponential type:
 \coqfrom{Algebra}{Naperian}
 %
 through the fact that \coqe!lookup! and \coqe!init! form a bijection.
-This is also known as a representable functor in mathematical
-circles~\citep{maclane:working-categorist}
+This is also known as a representable functor in categorical
+circles~\citep{maclane:working-categorist}.
 
 %% ** example: Rows.T indexed by Rows.Ix
 %% ** example: Cols.T indexed by Cols.Ix
 %% ** example: Slice8.T indexed by Slice8.Ix
 
-Following our earlier discussion, we ask that \coqe!Rows.T!
-(respectively, \coqe!Cols.T!) is a Naperian functor indexed by a set
-of 4 elements. Similarly, \coqe!Slice8.T! is a Naperian functor
-indexed by 8 elements. We defined
+Following our earlier discussion, we ask for \coqe!Rows.T!
+(respectively, \coqe!Cols.T!) to be a Naperian functor indexed by a
+set of 4 elements. Similarly, \coqe!Slice8.T! must be a Naperian
+functor indexed by 8 elements. We define
 %
 \coqfrom{Rows}{Ix}
 %
@@ -477,8 +478,8 @@ Note that we have a notion of indexing but no arithmetic: we remain in
 line with our objectives. Note also that being Naperian implies being
 a commutative applicative functor. As a corollary, we get that any
 combination of \coqe!Rows.T!, \coqe!Cols.T! and \coqe!Slice8.t!
-applied to \coqe!bool! yields a Boolean algebra (over which we can
-therefore write combinational circuits).
+applied to \coqe!bool! yields a Boolean algebra, over which we can
+therefore write combinational circuits.
 
 %% ** derived operation: Naperian implies commutative applicative
 %% ** derived operation: structure of indices
@@ -495,20 +496,19 @@ elements as \coqe!Cols.T! through the following construction:
 
 Note that, since they actually have the same number of elements, we
 could also go the other way around, defining an inhabitant of
-\coqe!Cols.T Rows.Ix!. We do not need this construction for \Skinny{}. It
-is necessary in the case of \Gift{}, which proceeds by transposition of
+\coqe!Cols.T Rows.Ix!. We do not need this construction for \Skinny{}
+but it is necessary for \Gift{}, which proceeds by transposition of a
 $4 \times 4$ matrix.
 
 %% * Foldable: left-to-right iteration
 %% ** induce: left-to-right order
 %% ** derived operation: left and right rotation
 
-The first step of diffusion process consists in performing a right
-rotation by a specific amount over each individual column. However, we
-do not have enough structure to identify a ``right'' or ``left''
-direction over our containers. The standard tool of the trade to
-achieve this effect is the notion of foldable
-functor~\citep{yorgey:typeclassopedia}:
+The first step of diffusion process consists in applying a right
+rotation over each individual column. However, we do not have enough
+structure to identify a ``right'' or ``left'' direction over our
+containers. The standard tool of the trade to achieve this effect is
+the notion of foldable functor~\citep{yorgey:typeclassopedia}:
 %
 \coqfrom{Algebra}{Foldable}
 
@@ -529,22 +529,24 @@ over a type \coqe!Ix!:
 %% ** figure: rotate each column by the the row index
 
 After suitable generalization, this leads us to the following model
-for the operation depicted in Figure~\ref{fig:shiftrows}
+for the \coqe!shiftrows_! operation, depicted in
+Figure~\ref{fig:shiftrows}:
 %
 \coqfrom{Skinny/Base}{shiftrows}
 %
 which represents the first half of the diffusion layer.
-
+%
 %% * Application: mixcolumns
 %% ** figure: psi_ >-> ror 1
-
+%
 The second half corresponds to a combinational circuit \coqe!psi_!
 %
 \coqfrom{Skinny/Base}{psi}
 %
 which exercises the Naperian structure of \coqe!Rows.T! together with
-some underlying Boolean algebra. This is followed by a right rotation
-of rows. Altogether, this defines the operation depicted in Figure~\ref{fig:mixcolumns}
+the underlying Boolean algebra. This is followed by a right rotation
+of rows. Altogether, this defines the \coqe!mixcolumns_! operation
+depicted in Figure~\ref{fig:mixcolumns}
 %
 \coqfrom{Skinny/Base}{mixcolumns}
 
