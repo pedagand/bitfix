@@ -694,9 +694,8 @@ grouping individual booleans into a single machine word. Doing so
 would improve memory density. However, we have to be very careful that
 we can still efficiently compute over this packed representation. As
 it turns out, for \Skinny{} and \Gift{}, we will not achieve this just
-now: we will have to wait until Section~\ref{sec:fixslicing}, which
-operates on the same data representation, to have our cake and eat it
-too.
+now: we will have to wait until Section~\ref{sec:fixslicing}, to have
+our cake and eat it too (using the \emph{same} data representation).
 
 %% * Remark: AoS vs. SoA
 %% ** /> bit level
@@ -727,7 +726,7 @@ With climate change threatening the Planet, storing only 16 bits in a
 32 bits word would be borderline unethical. We can further increase
 register usage and instantly double throughput by processing two
 blocks at the same time. To this end, we introduce a new Naperian
-functor, \coqe!Double.T!, indexed by the two element set \coqe!Fst!
+functor, \coqe!Double.T!, indexed by the two elements set \coqe!Fst!
 and \coqe!Snd!. This leads to
 %
 \coqfrom{Skinny/Bitslice}{state}
@@ -807,11 +806,13 @@ state that \coqe!Spec.skinny! and \coqe!Bitslice.skinny! must preserve
 the following relation
 %
 \coqfrom{Skinny/BitsliceProof}{invariant_bitslice}
+%
+from their input to their outputs.
 
 The relational invariant will then naturally and compositionally
 percolate through the various layers of the ciphers. We can then read
 off the bitsliced code from the bitsliced types and relational
-invariant. A single round of the cipher thus becomes:
+invariant. A single round of the cipher becomes:
 %
 \coqfrom{Skinny/Bitslice}{round}
 
@@ -829,13 +830,13 @@ Considering (very carefully!) the instances of \coqe!subcells_!,
 implemented over machine words: they only involve boolean operations,
 applied bit-wise over \coqe!reg32!.
 
-Unfortunately, \coqe!shiftrows_! and \coqe!Rows.ror! involve some very
-fiddly and computationally costly bit twiddling. These amount to
+Unfortunately, \coqe!shiftrows_! and \coqe!Rows.ror! would entail some
+very fiddly and computationally costly bit twiddling. These amount to
 performing bit-level permutations within a machine word. This is a
 frequent pain point when bitslicing the diffusion layer of ciphers: it
-is also true in the case of \Gift{} and \AES{}, for instance. In the next
-section, we present this one weird trick to get permutations to nearly
-vanish.
+is also true in the case of \Gift{} and \AES{}, for instance. In the
+next section, we present this one weird trick to get permutations to
+nearly vanish.
 
 \section{Fixslicing}
 \label{sec:fixslicing}
@@ -847,8 +848,8 @@ vanish.
 %% ** push and accumulate bit-level across code
 
 Studying the \Gift{} cipher, \citet{adominicai:fixslicing-gift} noticed that the
-permutation layer can be decompose into, first, a transformation that
-can be efficiently implemented within a register and, second, a
+permutation layer can be decomposed into, first, a transformation that
+can be efficiently implemented over machine words and, second, a
 permutation that commutes with the other layers (confusion and key
 mixing). Similarly, the diffusion layer of \Skinny{} can be decomposed as
 follows
@@ -897,7 +898,7 @@ is that, after only 4 steps, \coqe!phi_! is almost an identity.
   %
   \coqfrom{Skinny/Base}{tau}
   %
-  and can be implemented reasonably efficiently.
+  which can be implemented reasonably efficiently.
 \end{prop}
 
 In typical mode of operation, \Skinny{} will perform between 32 and 56
@@ -930,7 +931,7 @@ Similarly and for the same reason, \coqe!phi_! commutes with
 \end{prop}
 
 Note that we have to transform the input key before hand, so as to
-keep both structures aligned. In particular, this means that we do not
+keep both blocks aligned. In particular, this means that we do not
 have to correct the first round subkey, we will have to apply
 \coqe!inv_phi! to the second round subkey, \coqe!iter 2 inv_phi! to
 the third round subkey and, finally, \coqe!iter 3 inv_phi! to the
@@ -942,8 +943,9 @@ fourth round subkey. The fifth round subkey starts back in sync,
 
 The crux of the matter is the interaction between \coqe!phi_! and the
 diffusion layer. We observe that putting a state \coqe!phi_ s! into
-the diffusion layer first yield a transformation relativized followed
-by the emission of two \coqe!phi_! steps out of the layer:
+the diffusion layer first yield a transformation relativized to a
+machine word followed by the emission of two \coqe!phi_! steps out of
+the layer:
 %
 \begin{coro}
   \coqfrom{Skinny/FixsliceProof}{absorb_phi_sigma1}
@@ -955,8 +957,8 @@ by the emission of two \coqe!phi_! steps out of the layer:
 
 This means that, in turn, the subsequent diffusion layer will have to
 absorb two \coqe!phi_! steps. We thus generalize our statement for any
-number of steps, the previous proposition being taken at $n = 1$.
-There are 4 relativized diffusion layers, namely 
+number of \coqe!phi_! steps, the previous statement corresponding to
+the case $n = 1$. There are 4 relativized diffusion layers, namely
 %
 \coqe!mixcolumns_mod 0!,
 %
