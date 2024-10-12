@@ -709,7 +709,7 @@ composition. We would thus have the type \coqe!Rows.T (Cols.T bool)!
 representing 16 bits and fitting snugly in a 32 bits machine word. The
 overall composition \coqe!Slice8.T (Rows.T (Cols.T bool))! would take
 8 registers in total, imposing a very reasonable amount of register
-pressure to the CPU.
+pressure on the CPU.
 %
 In effect, to return back to the jargon of compiler designers, we
 propose to turn a structure-of-arrays (SoA) into an
