@@ -340,26 +340,57 @@ Section Derived.
     foldM
       (map (fun x => cons x nil) xs).
 
-  (* XXX: implement generically *)
 (*
-  Definition ror {A}(xs: F A)(i: nat): F A :=
-    match i with
-    | 0 => xs
-    | S n => ror () n
+  Variable Ix: Type.
+  Context `{Naperian F Ix}.
 
-  Definition rol {A}(xs: F A)(i: nat): F A.
+  Definition ror {A}(n: nat)(xs: F A): F A :=
+    let ixs := indices Ix in
+    let seqs := List.seq 0 (List.length (to_list ixs)) in
+    let list_ixs := List.combine (to_list ixs)  in
+    init (fun i => lookup xs i).
+
+  Definition rol {A}(i: nat)(xs: F A): F A.
   Admitted.
 *)
+
 End Derived.
 
 Arguments to_list {F _ _ A} xs.
-(*
-Arguments rol {F _ _ A} xs i.
-Arguments ror {F _ _ A} xs i.
-*)
+
 
 (*
 Class FoldableLaws {F} `(Foldable F).
   (* XXX: to be done *)
 
 *)
+
+
+(* ******************************** *)
+
+(* =Circulant= *)
+Class Circulant {F} `(Functor F) :=
+  { circulant: forall A, F A -> F (F A)
+  ; anticirculant: forall A, F A -> F (F A) }.
+(* =end= *)
+
+Arguments circulant {F _ _ A} xs.
+Arguments anticirculant {F _ _ A} xs.
+
+Section Derived.
+  Variable F: Type -> Type.
+  Variable Ix: Type.
+  Context `(Circulant F).
+  Context `(Naperian F Ix).
+
+  (* =ror_rol_sig= *)
+  Definition ror {A} (ix: Ix)(xs: F A): F A :=
+    lookup (circulant xs) ix.
+  Definition rol {A} (ix: Ix)(xs: F A): F A :=
+    lookup (anticirculant xs) ix.
+  (* =end= *)
+
+End Derived.
+
+Arguments rol {F Ix _ _ _ _ A} ix xs.
+Arguments ror {F Ix _ _ _ _ A} ix xs.

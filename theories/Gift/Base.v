@@ -90,7 +90,7 @@ Section Permbits.
 
   Definition sigma {A} (m: Cols.T (Rows.T A)): Cols.T (Rows.T A) :=
     let m := reverse m in
-    let m := Cols.ror Cols.C1 m in
+    let m := ror Cols.C1 m in
     rotate m.
 
   Proposition idemp_sigma4 {A}: forall (m: Cols.T (Rows.T A)), sigma (sigma (sigma (sigma m))) = m.
@@ -117,7 +117,7 @@ Section Permbits.
             end).
 
   Definition rols {A} : Slice4.T (Cols.T A -> Cols.T A) :=
-    map Cols.rol indices_C.
+    map rol indices_C.
 
   Definition permbits_ {A} : Slice4.T (Cols.T (Rows.T A) -> Cols.T (Rows.T A)) :=
     map (fun p xs => sigma (p xs)) rols.
@@ -158,7 +158,7 @@ Section PermbitsTest.
   Proof. reflexivity. Qed.
 
   Lemma correct_ror1:
-    Cols.ror Cols.C1 (indices Cols.Ix) =
+    ror Cols.C1 (indices Cols.Ix) =
       Cols.Build_T Cols.C3 Cols.C0 Cols.C1 Cols.C2.
   Proof. reflexivity. Qed.
 

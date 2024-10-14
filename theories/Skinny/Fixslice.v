@@ -55,9 +55,9 @@ Section MixColumns.
     let r1 := lookup s Rows.R1 in
     let r2 := lookup s Rows.R2 in
     let r3 := lookup s Rows.R3 in
-    let r0' := map2 xor (Cols.ror Cols.C2 r1) r0 in
+    let r0' := map2 xor (ror Cols.C2 r1) r0 in
     let r1' := map2 xor r3 r1 in
-    let r2' := map2 xor (Cols.ror Cols.C2 r1') r2 in
+    let r2' := map2 xor (ror Cols.C2 r1') r2 in
     init (fun r => match r with
                    | Rows.R0 => r0'
                    | Rows.R1 => r1'
@@ -75,9 +75,9 @@ Section MixColumns.
     let r1 := lookup s Rows.R1 in
     let r2 := lookup s Rows.R2 in
     let r3 := lookup s Rows.R3 in
-    let r3' := map2 xor (Cols.ror Cols.C3 r0) r3 in
-    let r0' := map2 xor (Cols.ror Cols.C2 r2) r0 in
-    let r1' := map2 xor (Cols.ror Cols.C1 r0') r1 in
+    let r3' := map2 xor (ror Cols.C3 r0) r3 in
+    let r0' := map2 xor (ror Cols.C2 r2) r0 in
+    let r1' := map2 xor (ror Cols.C1 r0') r1 in
     init (fun r => match r with
                    | Rows.R0 => r0'
                    | Rows.R1 => r1'
@@ -115,7 +115,7 @@ Arguments mixcolumns_mod2_explicit {B _} s.
 Arguments mixcolumns_mod3_explicit {B _} s.
 
 Lemma rol1_init {A}: forall (f: Rows.Ix -> A),
-  Rows.rol Rows.R1 (init f)
+  rol Rows.R1 (init f)
   = init (fun r => match r with
                    | Rows.R0 => f Rows.R1
                    | Rows.R1 => f Rows.R2
@@ -125,7 +125,7 @@ Lemma rol1_init {A}: forall (f: Rows.Ix -> A),
 Proof. reflexivity. Qed.
 
 Lemma ror1_init: forall A (f: Rows.Ix -> A),
-  Rows.ror Rows.R1 (init f) 
+  ror Rows.R1 (init f)
   = init (fun r => match r with
                    | Rows.R0 => f Rows.R3
                    | Rows.R1 => f Rows.R0
@@ -174,12 +174,13 @@ Lemma rol_Z: forall A (s: Cols.T A), Cols.rol1 s = Cols.rol s 1.
 Proof. reflexivity. Qed. 
 *)
 
-Lemma ror_S: forall A (s: Cols.T A) m n, Cols.ror m (Cols.ror n s) = Cols.ror (Cols.add m n) s.
+(*
+Lemma ror_S: forall A (s: Cols.T A) m n, ror m (ror n s) = ror (Cols.add m n) s.
 Proof. Admitted. (* reflexivity. Qed.  *)
 
-Lemma rol_S: forall A (s: Cols.T A) m n, Cols.rol m (Cols.rol n s) = Cols.rol (Cols.add m n) s.
+Lemma rol_S: forall A (s: Cols.T A) m n, rol m (Cols.rol n s) = Cols.rol (Cols.add m n) s.
 Proof. Admitted. (* reflexivity. Qed.  *)
-
+*)
 (*
 Lemma ror_mod4 {A}: forall (s: Cols.T A) n, Cols.ror s (3 + n) = Cols.ror s n.
 Proof. Admitted.
@@ -224,12 +225,13 @@ Lemma rol_xor {B}`{Boolean B}: forall (s0 s1: Cols.T B)(n: nat), Cols.rol (xor s
 Admitted.
 *)
 
+(*
 Lemma rol1_xor: forall B `(Boolean B) (s0 s1: Cols.T B) m, Cols.rol m (xor s0 s1) = xor (Cols.rol m s0) (Cols.rol m s1).
 Proof. Admitted. (*reflexivity. Qed.*)
 
 Lemma ror1_xor: forall  B `(Boolean B) (s0 s1: Cols.T B) m, Cols.ror m (xor s0 s1) = xor (Cols.ror m s0) (Cols.ror m s1).
 Proof. Admitted. (*reflexivity. Qed.*)
-
+*)
 (*
 Lemma ror1_idemp: forall A (s: Cols.T A),
     Cols.ror (Cols.ror1 (Cols.ror1 (Cols.ror1 (s)))) = s.
@@ -249,10 +251,11 @@ Hint Rewrite
   lookup_init
   app_init
   ror1_init
-  rol1_xor
+  (*
+    rol1_xor
   ror1_xor
   ror_S
-  rol_S
+  rol_S *)
 (*
   ror1_idemp
   ror1_rol1

@@ -36,7 +36,7 @@ Definition indices_R : Slice4.T Rows.Ix :=
 
 Definition permbits_mod1_explicit (s: state): state :=
   let p : Rows.Ix -> reg32 bool -> reg32 bool :=
-      fun i crs => map (Rows.rol i) crs
+      fun i crs => map (rol (F := Rows.T) i) crs
   in
   app (map p indices_R) s.
 
@@ -49,7 +49,7 @@ Definition permbits_mod2 (s: state): state :=
     map inv_sigma (map inv_sigma (app rols (map sigma (map sigma s)))).
 
 Definition permbits_mod2_explicit (s: state): state :=
-  app (map Cols.ror indices_C) s.
+  app (map (ror (F := Cols.T)) indices_C) s.
 
 Lemma equiv_permbits_mod2: forall s, permbits_mod2 s = permbits_mod2_explicit s.
 Proof.
@@ -68,7 +68,7 @@ Definition permbits_mod3 (s: state): state :=
 
 Definition permbits_mod3_explicit (s: state): state :=
   let p : Rows.Ix -> reg32 bool -> reg32 bool :=
-      fun i crs => map (Rows.ror i) crs
+      fun i crs => map (ror (F := Rows.T) i) crs
   in
   app (map p indices_R) s.
 

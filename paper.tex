@@ -504,26 +504,42 @@ $4 \times 4$ matrix.
 %% ** induce: left-to-right order
 %% ** derived operation: left and right rotation
 
-The first step of diffusion process consists in applying a right
+The first step of the diffusion process consists in applying a right
 rotation over each individual column. However, we do not have enough
 structure to identify a ``right'' or ``left'' direction over our
-containers. The standard tool of the trade to achieve this effect is
-the notion of foldable functor~\citep{yorgey:typeclassopedia}:
+containers. To do so, we introduce the (regretfully ad-hoc\footnote{We
+were hoping to be able to piggy-back on the notion of
+foldable~\citep{yorgey:typeclassopedia} and Naperian functor to
+identify directions. Intuitively, \coqe!fold! denotes a unique
+left-to-right traversal order. However, we could only turn this into a
+rotation if we asked for a decidable equality over the logarithm of
+the functor. We are not sure yet whether we want to make such a
+commitment.}) notion of circulant functor
 %
-\coqfrom{Algebra}{Foldable}
+\coqfrom{Algebra}{Circulant}
+%
+taking an \coqe!F!-vector to an \coqe!F! $\times$ \coqe!F! circulant
+matrix (performing a right-rotation of \coqe!F A! at each step) and
+\coqe!F! $\times$ \coqe!F! anticirculant matrix (performing a
+left-rotation of \coqe!F A! at each step).
 
-Taking the monoid to be \coqe!list A! (under nil and concatenation,
-\ie{} the free monoid construction), we can read off the
-directionality we were after.
-%
 More usefully for our purposes, we can derive generic left and right
-rotation operators for any foldable functor \coqe!T! Naperian
-over a type \coqe!Ix!:
+rotation operators for any circulant functor \coqe!T!  Naperian over a
+type \coqe!Ix!:
 %
-\coqfrom{Rows}{ror_sig}
-\coqfrom{Rows}{rol_sig}
+\coqfrom{Algebra}{ror_rol_sig}
 
-\TODO{Foldable to ror/rol}
+
+%% The equational theory is unclearas expected for rotations: additive on the
+%% indices when going in the same direction (\coqe!ror i (ror j xs)! and
+%% \coqe!rol i (rol j xs)!), subtractive when going in opposite direction
+%% (\coqe!ror i (rol j xs)! and \coqe!rol i (ror j xs)!).
+
+%\coqfrom{Algebra}{Foldable}
+%% Taking the monoid to be \coqe!list A! (under nil and concatenation,
+%% \ie{} the free monoid construction), we can read off the
+%% directionality we were after.
+%% %
 
 %% * Application: shiftows
 %% ** figure: rotate each column by the the row index

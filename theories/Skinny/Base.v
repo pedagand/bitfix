@@ -103,18 +103,18 @@ Section ShiftRows.
   Variable A: Type.
 
   Definition shiftrows_: Rows.T (Cols.T A -> Cols.T A) :=
-    map Cols.ror indices_C.
+    map ror indices_C.
   (* =end= *)
 
   (* =phi= *)
   Definition phi_ (rs: Rows.T (Cols.T A)): Rows.T (Cols.T A) :=
-    Rows.ror Rows.R1 (app shiftrows_ rs).
+    ror Rows.R1 (app shiftrows_ rs).
   (* =end= *)
 
   (* =inv_phi= *)
   Definition inv_phi_ (rs: Rows.T (Cols.T A)): Rows.T (Cols.T A) :=
-    let rs := Rows.rol Rows.R1 rs in
-    app (map Cols.rol indices_C) rs.
+    let rs := rol Rows.R1 rs in
+    app (map rol indices_C) rs.
   (* =end= *)
 
   Definition phi_explicit_ (rs: Rows.T (Cols.T A)): Rows.T (Cols.T A) :=
@@ -123,15 +123,15 @@ Section ShiftRows.
     let r2 := lookup rs Rows.R2 in
     let r3 := lookup rs Rows.R3 in
     init (fun r => match r with
-                   | Rows.R0 => Cols.ror Cols.C3 r3
-                   | Rows.R1 => Cols.ror Cols.C0 r0
-                   | Rows.R2 => Cols.ror Cols.C1 r1
-                   | Rows.R3 => Cols.ror Cols.C2 r2
+                   | Rows.R0 => ror Cols.C3 r3
+                   | Rows.R1 => ror Cols.C0 r0
+                   | Rows.R2 => ror Cols.C1 r1
+                   | Rows.R3 => ror Cols.C2 r2
                    end).
 
   (* =tau= *)
   Definition tau_ (rs: Rows.T (Cols.T A)): Rows.T (Cols.T A) :=
-    map (Cols.ror Cols.C2) rs.
+    map (ror Cols.C2) rs.
   (* =end= *)
 
 End ShiftRows.
@@ -166,7 +166,7 @@ Section MixColumns.
 
   (* =mixcolumns= *)
   Definition mixcolumns_ (rs: Rows.T B): Rows.T B :=
-    Rows.ror Rows.R1 (psi_ rs).
+    ror Rows.R1 (psi_ rs).
   (* =end= *)
 
   Definition mixcolumns_spec_ (rs: Rows.T B): Rows.T B :=
@@ -191,9 +191,9 @@ Section MixColumns.
     let r2 := lookup s Rows.R2 in
     let r3 := lookup s Rows.R3 in
     let r0' := r0 in
-    let r1' := xor (Cols.ror Cols.C1 r2) r1 in
-    let r2' := xor (Cols.ror Cols.C2 r0) r2 in
-    let r3' := xor (Cols.ror Cols.C3 r2') r3 in
+    let r1' := xor (ror Cols.C1 r2) r1 in
+    let r2' := xor (ror Cols.C2 r0) r2 in
+    let r3' := xor (ror Cols.C3 r2') r3 in
     init (fun r => match r with
                    | Rows.R0 => r0'
                    | Rows.R1 => r1'

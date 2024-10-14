@@ -46,9 +46,11 @@ Next Obligation. Admitted.
 Next Obligation. Admitted.
 *)
 
+(*
 #[global]
   Instance Foldable_T: Foldable Functor_T.
 Admitted.
+*)
 (*
   { foldM := fun _ _ xs => append xs.(fst) xs.(snd) }. *)
 
@@ -56,8 +58,6 @@ Admitted.
 #[program, global]
   Instance FoldableLaws_T: FoldableLaws Foldable_T.
 *)
-
-(* XXX: temporary hack. Delete *)
 
 Definition add (b: Ix)(c: Ix): Ix :=
   match c with
@@ -106,47 +106,10 @@ Definition sub (b: Ix)(c: Ix): Ix :=
           end
   end.
 
-(* =rol_sig= *)
-Definition rol {A} (i: Ix)(xs: T A): T A
-(* =end= *)
-  := perm (fun j => add j i) xs.
-
-(* =ror_sig= *)
-Definition ror {A} (i: Ix)(xs: T A): T A
-(* =end= *)
-  := perm (fun j => sub j i) xs.
-
-(*
-Definition ror1 {A} (xs: T A): T A :=
-  perm (fun i => match i with
-                 | R0 => R3
-                 | R1 => R0
-                 | R2 => R1
-                 | R3 => R2
-                 end) xs.
-
-Fixpoint ror {A} (xs: T A)(i: Ix): T A :=
-  match i with
-  | R0 => xs
-  |  => ror1 (ror xs i)
-  end.
-*)
-
-(*
-Definition rol1 {A} (xs: T A): T A :=
-  perm (fun i => match i with
-                 | R0 => R1
-                 | R1 => R2
-                 | R2 => R3
-                 | R3 => R0
-                 end) xs.
-
-Fixpoint rol {A} (xs: T A)(i: nat): T A :=
-  match i with
-  | 0 => xs
-  | S i => rol1 (rol xs i)
-  end.
-*)
+#[global]
+  Instance Circulant_T: Circulant Functor_T :=
+  { circulant := fun _ xs =>  init (fun i => perm (fun j => sub j i) xs)
+  ; anticirculant := fun _ xs => init (fun i => perm (fun j => add j i) xs) }.
 
 Definition xs : T Ix := indices Ix.
 
