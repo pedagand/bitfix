@@ -1038,12 +1038,13 @@ language of Boolean algebras (\coqe!xor!, \etc{}), Naperian operations
 \coqe!ror! and \coqe!rol!).
 
 One solution\footnote{Needless to say, in reality, we first went
-looking find 4 simplified implementations, inspired
-by~\citet{adominicai:fixslicing-gift}. Only later did we use Coq to
-understand how these solutions \emph{could} have been derived from
-first principles.}, which consists in using Coq as a term rewriting
-engine, is to postulate the existence of such an explicit form, let us
-call it
+looking for 4 direct, simplified implementations, inspired
+by~\citet{adominicai:fixslicing-gift}. Then we showed that these
+implementations were equivalent to their respective
+specification. Only later did we use Coq to understand how these
+solutions \emph{could} have been derived from first principles.},
+which consists in using Coq as a term rewriting engine, is to
+postulate the existence of such an explicit form, let us call it
 %
 \coqe!mixcolumns_mod_explicit!.
 %
