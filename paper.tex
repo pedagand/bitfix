@@ -723,12 +723,15 @@ quantities here.
 %% **** -> Double.T bool is Boolean
 %% *** -> 8 registers of 32 bits machine words
 
-With climate change threatening the Planet, storing only 16 bits in a
-32 bits word would be borderline unethical. We can further increase
-register usage and instantly double throughput by processing two
-blocks at the same time. To this end, we introduce a new Naperian
-functor, \coqe!Double.T!, indexed by the two elements set \coqe!Fst!
-and \coqe!Snd!. This leads to
+% With climate change threatening the Planet, storing only 16 bits in
+% a 32 bits word would be borderline unethical.
+
+Storing only 16 bits in a 32 bits word (on \textsc{Arm} Cortex M)
+remains sub-optimal. We can further increase register usage and
+instantly double throughput by processing two blocks at the same
+time. To this end, we introduce a new Naperian functor,
+\coqe!Double.T!, indexed by the two elements set \coqe!Fst!  and
+\coqe!Snd!. This leads to
 %
 \coqfrom{Skinny/Bitslice}{state}
 %
