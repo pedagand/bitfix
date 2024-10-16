@@ -11,26 +11,18 @@ Section Subcells.
 
   Definition bperm (xs: Slice8.T B): Slice8.T B :=
     perm (fun s => match s with
-                   | Slice8.S7 => Slice8.S2
-                   | Slice8.S6 => Slice8.S1
-                   | Slice8.S5 => Slice8.S7
-                   | Slice8.S4 => Slice8.S6
-                   | Slice8.S3 => Slice8.S4
-                   | Slice8.S2 => Slice8.S0
-                   | Slice8.S1 => Slice8.S3
-                   | Slice8.S0 => Slice8.S5
+                   | Slice8.S7 => Slice8.S2 | Slice8.S6 => Slice8.S1
+                   | Slice8.S5 => Slice8.S7 | Slice8.S4 => Slice8.S6
+                   | Slice8.S3 => Slice8.S4 | Slice8.S2 => Slice8.S0
+                   | Slice8.S1 => Slice8.S3 | Slice8.S0 => Slice8.S5
                    end) xs.
 
   Definition bperm_out (xs: Slice8.T B): Slice8.T B  :=
     perm (fun s => match s with
-                   | Slice8.S0 => Slice8.S0
-                   | Slice8.S1 => Slice8.S2
-                   | Slice8.S2 => Slice8.S1
-                   | Slice8.S3 => Slice8.S3
-                   | Slice8.S4 => Slice8.S4
-                   | Slice8.S5 => Slice8.S5
-                   | Slice8.S6 => Slice8.S6
-                   | Slice8.S7 => Slice8.S7
+                   | Slice8.S0 => Slice8.S0 | Slice8.S1 => Slice8.S2
+                   | Slice8.S2 => Slice8.S1 | Slice8.S3 => Slice8.S3
+                   | Slice8.S4 => Slice8.S4 | Slice8.S5 => Slice8.S5
+                   | Slice8.S6 => Slice8.S6 | Slice8.S7 => Slice8.S7
                    end) xs.
   (* =end= *)
 
