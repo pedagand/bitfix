@@ -162,12 +162,12 @@ access based on the secret data, leaving only register spilling.
 %% *** in particular: no-trick-up-my-sleeves Sbox
 %% ** operate over bit-level n-dimensional array
 
-Following the NSA involvement in the design of the \DES{} diffusion
+Following the NSA involvement in the design of the \DES{} confusion
 layer~\citep{johnson:cold-war-crypto}, cryptographers have been
 advocating for ``nothing-up-my-sleeve'' designs (which does not make
 magic tricks impossible, just
 harder~\citep{bernstein:something-up-my-sleeves}). For example, the
-diffusion layer of the \AES{} standard is based on the usual
+confusion layer of the \AES{} standard is based on the usual
 multiplicative inverse over the finite field induced by an
 innocent-looking polynomial. To support such design, the state modern
 ciphers operate on is taken to represent a certain matrix
