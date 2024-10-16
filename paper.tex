@@ -390,8 +390,8 @@ words, how to be sure that a \coqe!Rows.T bool! behaves ``similarly''
 as a \coqe!Rows.T nat!? One could try and argue that Coq does not
 allow pattern matching on types but it is rather unsavory to involve
 the design of the whole programming language into this argument.
-
-Instead, we require \coqe!Rows.T! to offer a \coqe!map! operation: it
+%
+Instead, we require \coqe!Rows.T! to offer a \coqe!map! operation: this
 constructively witnesses the fact that a \coqe!Rows.T A! is
 (functionally) related to a \coqe!Rows.T B!, as long as we can
 (functionally) relate \coqe!A! and \coqe!B!. Put otherwise, we ask
