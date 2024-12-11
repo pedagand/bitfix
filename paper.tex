@@ -600,7 +600,7 @@ depicted in Figure~\ref{fig:mixcolumns}:
 The confusion layer builds upon two permutations over \coqe!Slice8.T!.
 Once again, this is merely exploiting the Naperian structure of
 \coqe!Slice8.T!: for any Naperian functor \coqe!F! indexed by
-\coqe!Ix!, there exists a generic permutation operator
+\coqe!Ix!, we can shuffle the elements of a container \coqe!F A! following an arbitrary permutation of indices:
 %
 \coqe!perm : forall A, (Ix -> Ix) -> F A -> F A!.
 %
