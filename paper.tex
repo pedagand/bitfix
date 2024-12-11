@@ -559,6 +559,21 @@ matrix (performing a right-rotation of \coqe!F A! at each step) and
 \coqe!F! $\times$ \coqe!F! anticirculant matrix (performing a
 left-rotation of \coqe!F A! at each step).
 
+%% JFLA'25, reviewer A:
+%% - p6, l240: de l'abstraction `Circulant`. En fait, ce que fait
+%%   Circulant pour vous, c'est exactement définir un isomorphisme entre
+%%   vos ensembles d'indexe et un groupe cyclique
+%%   $\mathbb{Z}/n\mathbb{Z}$, je pense que vous vous éviteriez pas mal
+%%   de complication en fait si vous vous autorisiez à penser en ces
+%%   termes. Ensuite, vous pouvez faire tout ce que vous voulez en termes
+%%   d'`ini`, `index`, et cette structure de groupe. Même les _applicative_
+%%   (qui sont tout de même plus naturels) ça ne vous sert
+%%   qu'essentiellement une fois. (sinon, il me semble que votre
+%%   `Circulant` identifie deux structures de comonades qui sont
+%%   compatibles avec la même counité (`index _ 0`), mais je ne sais pas
+%%   si c'est important).
+
+
 More usefully for our purposes, we can derive generic left and right
 rotation operators for any circulant functor \coqe!T!  Naperian over a
 type \coqe!Ix!:
