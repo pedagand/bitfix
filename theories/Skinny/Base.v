@@ -144,7 +144,6 @@ Section MixColumns.
     let r1 := lookup s Rows.R1 in
     let r2 := lookup s Rows.R2 in
     let r3 := lookup s Rows.R3 in
-    let r0' := r0 in
     let r1' := xor r2 r1 in
     let r2' := xor r0 r2 in
     let r3' := xor r2' r3 in
