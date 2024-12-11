@@ -463,6 +463,7 @@ arguments can be reduced in any order:
 \coqfrom{Algebra}{ApplicativeComm}
 
 
+
 \subsection{Diffusion}
 
 %% * Naperian functor: functional indexing
@@ -709,6 +710,20 @@ procedure:
 %
 \coqfrom{Skinny/Spec}{skinny}
 
+Remarkably, reading off the types of \coqe!subcells_!,
+\coqe!add_round_key_!, \coqe!shiftrows_! and \coqe!mixcolumns_!, we
+can argue that this specification supports an implementation immune to
+time-based side-channel attacks. This boils to justifying of the
+absence of control-flow operation depending on cryptographic secrets
+(the plaintext \coqe!s! and, even more crucially, the round keys in
+\coqe!constkey!). It is obvious for \coqe!shiftrows_!, which is
+defined parametrically over any type \coqe!A!. If we can guarantee
+that the Boolean algebra operations can be implemented in
+constant-time (which is the objective of the next Section), then we
+get that the other 3 operations and, therefore, their composition is
+constant-time too.
+
+
 \section{Bitslicing}
 \label{sec:bitslicing}
 
@@ -736,11 +751,23 @@ usage.
 
 We must therefore look toward adopting a \emph{packed} representation,
 grouping individual booleans into a single machine word. Doing so
-would improve memory density. However, we have to be very careful that
-we can still efficiently compute over this packed representation. As
-it turns out, for \Skinny{} and \Gift{}, we will not achieve this just
-now: we will have to wait until Section~\ref{sec:fixslicing}, to have
-our cake and eat it too (using the \emph{same} data representation).
+would improve memory density. This would also lead to an
+implementation of the Boolean algebra that operates uniformly over
+whole machine words, using machine instructions to process an entire
+slice in a set number of CPU cycles. This is the fundamental
+assumption behind bitslicing~\citep{biham:DES}: applying, say, a
+logical \coqe!AND! machine instruction over two registers (each
+representing a slice of the cipher state) takes one CPU cycle and
+therefore takes the same amount of time, independently of the values
+stored in the registers\footnote{A careful reader will have noted the
+non sequitur: taking one CPU cycle does not actually imply
+taking identitical (physical) execution time~\citep{wang:hertzbleed}. In very specific circumstances where the cryptographic primitive acts as a signal amplifier, this can actually be exploited: we do not account for this sort of second-order effect in the present work.}.
+
+%% However, we have to be very careful that
+%% we can still efficiently compute over this packed representation. As
+%% it turns out, for \Skinny{} and \Gift{}, we will not achieve this just
+%% now: we will have to wait until Section~\ref{sec:fixslicing}, to have
+%% our cake and eat it too (using the \emph{same} data representation).
 
 %% * Remark: AoS vs. SoA
 %% ** /> bit level
