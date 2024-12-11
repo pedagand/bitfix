@@ -1063,6 +1063,14 @@ and they correspond to the diffusion layers absorbing that many
   \coqfrom{Skinny/FixsliceProof}{absorb_phi_sigma}
 \end{prop}
 
+In effect, we have transformed the bitsliced round from
+Section~\ref{sec:bitslicing}, which applied \coqe!phi_! in every round
+over a uniform state representation, into 4 specialized rounds that
+each operate over a specific layout of the state. We have thus traded
+code size (specializing the round function to 4 specific layouts) for
+improved run-time performance (avoiding the bit-twiddling operations
+implied by \coqe!phi_!).
+
 
 %% * Round
 %% ** shiftrows spread out across 4 mod steps + tau
