@@ -147,17 +147,15 @@ individual round subkeys are processed as ``blocks'' of binary data.
 The block size is of the order of a hundred bits (typically, 64, 128
 or 256 bits).
 
-Looking at the process of turning the plaintext into a ciphertext, one
-realizes that cryptographers have been programming in the State monad
-all along: ciphers are described as operating on a ``state'',
-initialized to be the plaintext and read off at the end as the
-ciphertext. This state is updated by a ``round'' function that is
-repeated a given number of times (of the order of ten iterations). The
-exact number of iterations is a trade-off between latency (less
-iterations means faster computation) and security (more iterations
-makes for more costly cryptanalysis effort). The round function itself
-is built compositionally from 3 components: a key mixing layer (making
-the encryption process reversible), a confusion layer (smoothing local
+Ciphers are described as operating on a ``state'', initialized to be
+the plaintext and read off at the end as the ciphertext. This state is
+updated by a ``round'' function that is repeated a given number of
+times (of the order of ten iterations). The exact number of iterations
+is a trade-off between latency (less iterations means faster
+computation) and security (more iterations makes for more costly
+cryptanalysis effort). The round function itself is built
+compositionally from 3 components: a key mixing layer (making the
+encryption process reversible), a confusion layer (smoothing local
 correlations among the inputs) and a diffusion layer (spreading
 correlations across the whole output block).
 
