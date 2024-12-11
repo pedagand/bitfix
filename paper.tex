@@ -774,12 +774,12 @@ remains sub-optimal. We can further increase register usage and
 instantly double throughput by processing two blocks at the same
 time. To this end, we introduce a new Naperian functor,
 \coqe!Double.T!, indexed by the two elements set \coqe!Fst!  and
-\coqe!Snd!. This leads to
+\coqe!Snd!. Since \coqe!Double.T bool! is a Boolean algebra, we immediately get that \coqe!subcells_! and \coqe!add_shift_rows_! can process two blocks at the same time. This leads to
 %
 \coqfrom{Skinny/Bitslice}{state}
 %
 which denote our intent to manipulate objects of type \coqe!reg32! as
-if they were stored in a single machine word. In the present work,
+if they were stored in a single machine word.  In the present work,
 this observation will remain at the state of wishful thinking. One can
 think of the code in this section (as well as the fixsliced code, in
 the next section) as playing, themselves, the role of specifications
