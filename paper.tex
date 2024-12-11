@@ -718,10 +718,11 @@ procedure:
 %% ** -> waste of register space
 
 If we were to adopt \coqe!state! as our actual representation, the
-memory usage of the resulting program would be quite poor. It would take
-at least 128 bytes to store that many bits (assuming that booleans are
-stored in the smallest addressable memory size, a byte). This would be
-a terrible waste of memory bandwidth and register usage.
+memory usage of the resulting program would be quite poor. It would
+take at least 512 bytes to store these 128 Booleans (assuming that each
+boolean is stored in the smallest addressable memory size, a 4-bytes
+word). This would be a terrible waste of memory bandwidth and register
+usage.
 
 %% * Packed representation
 %%   -> improve memory density
