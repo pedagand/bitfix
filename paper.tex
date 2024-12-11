@@ -113,6 +113,20 @@ optimized code, starting from an high-level description of the cipher.
 This is already the case for bitslicing~\citep{mercadier:PhD}, adding support
 for fixslicing is next on the list.
 
+Note that the ambitions of our work stops at the level of
+\emph{symmetric} cryptographic \emph{primitives} and, in particular,
+their operational specification. These primitives would typically be
+used (as black-boxes) in cryptographic \emph{protocols}: the analysis
+of such protocols is out of the scope of the present work. Moreover,
+we do not pretend that our conceptual apparatus could be useful to the
+mathematical analysis of these primitives, as performed in a typical
+``Section 2'', since this involves sophisticated, much more high-level
+mathematical objects and results. Our focus is solely on shortening
+the gap between an operational description of a primitive and its
+efficient implementation. In effect, we are designing a programming
+language dedicated to the description of symmetric cryptographic
+primitives.
+
 %% * Executive summary of modern symmetric cryptography
 %% ** iterate pure `round` function N times
 %% *** thread a `state`
