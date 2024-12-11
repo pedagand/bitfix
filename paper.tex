@@ -457,8 +457,16 @@ applicative functor offers the following operations:
 subject to an equational theory expressing the fact that applicative
 functors correspond to lax monoidal
 functors~\citep{maclane:working-categorist} over the Cartesian product
-type. Commutativity of an applicative functor \coqe!F! states that
-arguments can be reduced in any order:
+type. Commutativity of an applicative functor \coqe!F!
+states\footnote{For conceptual simplicity, we shall state our
+properties using an extensional equality throughout this article: two
+functions can be substituted for one another ---they are equal--- if
+they produce the same outputs given the same inputs. Given our focus
+on terminating functions (cryptographic primitives) from finite types
+to finite types (blocks of plaintext to blocks ciphertext), this is
+perfectly justified, even in an intuitionist type-theory such as the
+Calculus of Inductive Constructions of Coq.} that arguments can be
+reduced in any order:
 %
 \coqfrom{Algebra}{ApplicativeComm}
 
