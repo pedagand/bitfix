@@ -1,0 +1,244 @@
+JFLA 2025 Paper #100 Reviews and Comments
+===========================================================================
+Paper #100 Can Symmetric Cryptography Be Liberated from the Von Neumann
+Style?
+
+
+Review #100A
+===========================================================================
+
+Avis général
+------------
+1. Très positif
+
+Degré d'expertise du relecteur ou de la relectrice
+--------------------------------------------------
+2. Moyen
+
+Résumé de l'article et contributions
+------------------------------------
+Cet article présente une formalisation en Coq d'une spécification
+exécutable d'un algorithme de cryptographie symmétrique par
+bloc. L'originalité de cette formulation est de se baser sur des
+structures algébriques (essentiellement des algèbres de Boole, et des
+endofoncteurs).
+
+Ces spécifications exécutables agissent directement sur une
+représentation précises des données (des matrices de bits), et
+n'utilisent pas d'opérateurs de contrôle, de manière à pouvoir être de
+plausibles implémentation des algorithmes, et aussi de pouvoir parler
+d'optimisation de performances (_bitfixing_ et _bitslicing_).
+
+Résumé de l'évaluation
+----------------------
+L'article est divertissant (à dessein de toute évidence) et
+informatif. Je pense que la plupart des affirmations dans l'article
+sont bien justifiée. C'est en particulier absolutement plausible
+d'imaginer pouvoir compiler des algorithmes écrits ainsi vers une
+implémentation sûre et efficace.
+
+Là où je suis probablement un peu moins bien convaincu, c'est sur
+l'algèbre. Je suis peut-être victime d'avoir trop anticipé en lisant
+l'abstract et l'introduction, mais tout de même, l'introduction me
+promet qu'elle va éclairer le design des algorithmes de cryptographie
+grâce à l'algèbre, et, finalement, je ne me sens que moyennement
+éclairé de ce point de vu. Principalement, l'article me dit qu'en
+abstrayant au maximum par rapport à une algèbre de Boole arbitraire,
+alors ça simplifie le raisonnement sur les algorithmes
+cryptographiques. Et c'est démontré de manière très convaincante. Mais
+ça ne me donne pas vraiment une nouvelle compréhension des
+algorithmes. Je m'attendais un aussi à voir une algébraisation, ou du
+moins une abstraction, qui garantie que l'implémentation n'utilise pas
+d'opérateur de contrôle, mais il ne me semble pas que ce soit le
+cas. Le papier ce donne juste des idiomes qui rendent facile de
+programmer sans contrôle, et ensuite, il convient de faire
+attention. Peut-être qu'à beaucoup d'égards, abstraire sur l'algèbre
+de Boole sous-jacente permet de s'assurer qu'on ne fait pas de
+contrôle, puisqu'une algèbre Boole abstraite ne fourni pas de
+test.
+
+Je parle un peu longuement de ça, mais ça ne gâche pas vraiment la
+lecture de l'article, comme mon appréciation doit le rendre évident.
+
+Évaluation détaillée et commentaires aux auteurs
+------------------------------------------------
+## Remarques en vrac
+
+- p2 l54: “cryptographers have been programming in the State monad” je
+  trouve cette affirmation un brin grandilocante quand-même. D'abord,
+  il n'y a plus de monade dans le reste de l'article. En plus, si on
+  peut effectivement décrire la composition de fonction $A\rightarrow
+  A$ comme “programmer dans la monade d'état”, il faut tout de même un
+  petit peu de mauvaise fois. En plus, c'est contreproductif pour
+  l'argument que la crypto c'est de la programmation fonctionnelle,
+  parce qu'il me semble que la composition de fonction, c'est plus
+  ce à quoi on pense quand on parle de programmation fonctionnelle que
+  de la monade d'état. D'ailleurs, ça fait partie de l'objet de
+  l'exercice que d'éviter le contrôle, et on peut arguer que les
+  monades ça parle essentiellement de contrôle. Donc ça jure vraiment
+  avec le reste du papier cette remarque, tout de même.
+- Quelque chose que j'ai trouvé un peu trop implicite, en terme de
+  description de la formalisation, c'est sur le traitement des
+  égalités. Je devine que les algèbres de Bool que vous considérez
+  doivent être des algèbres de Bool par rapport à l'égalité native de
+  Coq, pas de quotient. C'est un peu limitant, mais ça n'a pas l'air
+  de vous poser de problème en pratique. J'aurais probablement aimé un
+  peu plus de commentaire là-dessus.
+- p6, l240: de l'abstraction `Circulant`. En fait, ce que fait
+  Circulant pour vous, c'est exactement définir un isomorphisme entre
+  vos ensembles d'indexe et un groupe cyclique
+  $\mathbb{Z}/n\mathbb{Z}$, je pense que vous vous éviteriez pas mal
+  de complication en fait si vous vous autorisiez à penser en ces
+  termes. Ensuite, vous pouvez faire tout ce que vous voulez en termes
+  d'`ini`, `index`, et cette structure de groupe. Même les _applicative_
+  (qui sont tout de même plus naturels) ça ne vous sert
+  qu'essentiellement une fois. (sinon, il me semble que votre
+  `Circulant` identifie deux structures de comonades qui sont
+  compatibles avec la même counité (`index _ 0`), mais je ne sais pas
+  si c'est important).
+- p10, l392: je pense qu'un programmeur typique aura l'intuition que
+  la définition de `reg32` va être `Double.T (Rows.T (Cols.T A))`,
+  mais ce n'est pas le choix que vous faites. Je réalise que c'est
+  l'essence du bitslicing, mais comme vous le remarquez dans votre
+  introduction, ce n'est pas une technique particulièrement connue
+  hors du milieu de la cryptographie. Je pense qu'il faut expliquer
+  pourquoi cette représentation est le bon choix.
+- À partir de la section 4 (Fixslicing), j'ai commencé à perdre le fil
+  de tous les algorithmes et leurs variantes, et de ce que vous
+  essayez de faire. J'en voit l'idée générale, mais c'est dur de
+  garder tout le contexte en tête.
+- Vous parlez de paramétricité à plusieurs endroit. Mais je n'ai pas
+  vraiment compris ce que vous faites avec? Est-ce que vous prouvez
+  des lemmes de paramétricités pour vos fonctions? Peut-être en
+  utilisant un plugin (je sais que des plugins pour prouver la
+  paramétricité de fonctions polymorphes automatiquement, mais je n'en
+  sais pas l'état). C'est un point qui mériterait d'être éclairci,
+  probablement.
+
+## Mineur
+- p1, l24 “zone à régime restrictive”: comme vous écrivez en anglais,
+  il vaut peut-être mieux éviter les blagues qui ne seront pas
+  comprises à l'international. C'est parfaitement à propos dans un
+  contexte franco-français, mais je ne pense pas que ce soit une
+  supposition que vous devriez faire.
+- p9, l372: “assuming that booleans are stored in the smallest
+  addressable memory size, a byte” vous êtes surprenamment généreux,
+  la réalité est généralement bien plus en faveur de votre argument,
+  les valeurs sont alignés sur des mots, donc un booléen prend
+  typiquement 4 à 8 octets.
+- p12, l494: “Being able to postpots `phi_`”: c'est la première fois,
+  me semble-t-il, que vous parlez de retarder l'application de `phi_`,
+  mais vous en parlez comme si c'était déjà un savoir partagé avec le
+  lecteur, alors que vous n'introduisez l'idée que dans la proposition
+  3 un peu plus bas.
+
+
+
+Review #100B
+===========================================================================
+
+Avis général
+------------
+2. Positif
+
+Degré d'expertise du relecteur ou de la relectrice
+--------------------------------------------------
+3. Faible
+
+Résumé de l'article et contributions
+------------------------------------
+I have experience with Interactive Theorem Provers (ITP-s), though *not* Coq, but no expertise in
+cryptography. My review thus focuses on the ITP / implementation aspects of the paper.
+
+The authors propose a Coq formalization of modern ciphers that supports code transformations such as
+bitslicing (low-level space/time optimizations) and fixslicing (modifications of the cipher based on
+the commutativity of some operations). This allows the authors to verify that the optimized versions
+of two ciphers, *Skinny* and *Gift*, are equivalent to their unoptimized versions.
+
+The implementation is provided: it consists of about 3,200 lines of code and is quite proof-heavy. I
+managed to build it using Coq `8.17.1`.
+
+Résumé de l'évaluation
+----------------------
+The important sections of the paper are mostly well-written and easy to follow, though I lack the
+background to fully understand some of the cryptography-related subtleties. The use of Coq by the
+authors to establish their framework is appreciated, as is their efforts to prove the correctness of
+the optimized ciphers.
+
+I find the tone is trying too hard to be unnecessarily goofy / saturday-morning-cartoony
+in places (lines 18-52 for instance), culminating in Footnote 3 which made me physically cringe. I
+do understand this is subjective and I don't hold it against the authors, though they will want to
+change the tone for most conferences out there.
+
+I cannot attest as to whether the contribution is actually new as I have no expertise in
+cryptography. It feels like Coq and Lean 4 should already have something close to this, but I cannot
+find something that *really* matches the work presented here at a cursory uninitiated glance. It
+does feel like work such as [Categorical Composable
+Cryptography](https://lmcs.episciences.org/12718) is related though.
+
+*As far as I inspected the Coq sources*, the formalization seems solid. More solid than I expected
+from the article actually, which tends to undersell the author's work at Coq-level. Most of the Coq
+code shown are basic (type) definitions and could be written in, say, Haskell or Rust; the use of
+Coq only comes into play in the few theorems present in the paper, almost exclusively in Section 4.
+
+The implementation however features a lot of proofs, ranging from the theorems found in the paper to
+(applicative / Naperian) functor lawfulness, and the proofs I looked at were decomposed in
+digestible lemmas with relatively simple proofs.
+
+Provided other reviewers can confirm the contribution on the formal cryptography front is original,
+my opinion is that this paper should be accepted.
+
+Évaluation détaillée et commentaires aux auteurs
+------------------------------------------------
+Line 47-48: "a purely functional program~~s~~".
+
+Line 49: "non-performance-critical".
+
+Line 72: "to support such design**s**"
+
+Line 399: "Our previous work on Usuba suggests ..." is there a reference for this work?
+
+Footnote 3: not useful.
+
+Line 524: "putting ... into the diffusion layer first yield**s** a transformation".
+
+
+
+Review #100C
+===========================================================================
+
+Avis général
+------------
+2. Positif
+
+Degré d'expertise du relecteur ou de la relectrice
+--------------------------------------------------
+2. Moyen
+
+Résumé de l'article et contributions
+------------------------------------
+Cet article comporte 3 pages d'introduction pédante et persifleuse qui m'ont fort diverti : les cryptographes sont au sommet de la chaîne alimentaire académique, mais ne savent pas programmer avec des langages de haut niveau. C'est précisément ce que ce travail vise à accomplir : abstraire les protocoles cryptographiques à chiffrement symmétrique de façon à pouvoir raisonner sur eux de façon formelle, ici dans l'assistant à la preuve Coq. Il s'agit de l'élaboration sous la forme d'un article de recherche des stages de deux étudiants de niveaux respectifs licence et master. L'article se concentre sur le chiffrement SKINNY, mais la démarche a été également entreprise sur GIFT, avec des conclusions de haut niveau semblables. La section 2 donne une spécification fonctionnelle de SKINNY qui repose sur un état global. Cet état est construit comme un emboîtement de contenants paramétriques, les contenants possibles étant des colonnes, des lignes, et des tranches, alors que la vision usuelle bas-niveau est une séquence de bits, au plus proche du langage machine. Les contenants sont munis d'une fonction ${\tt map}$, encapsulée dans un foncteur. Le chiffrement peut alors être décrit comme une séquence de transformations de l'état global : mélange de clefs, diffusion et confusion. Toutes ces transformations se décrivent naturellement sur les états vus comme emboîtements grâce à différentes monades, l'article suggérant que lorsque l'état est une séquence de bits, elles sont très compliquées à décrire et à comprendre. Il faut noter que bien que les éléments d'un contenant puissent d'ordinaire être indexés par des nombres qui autorisent une forme d'arithmétique de pointeurs, ici les indexes appartiennent à un type énuméré fini qui prohibe ces fantaisies -- évitant les erreurs usuelles sur les bornes des boucles et les accès des cellules dans les tableaux par exemple.
+Le protocole de chiffrement consiste en une itération des etapes mélange de clefs, diffusion et confusion.
+La section 3 (bitslicing) étudie comment coder le chiffrement en groupant les booléans / bits qui sont les types ultimes des contenants les plus internes en mots machine de façon à économiser l'espace mémoire. Il s'y trouve l'énoncé que ce codage est correct sous la forme d'un théorème prouvé en Coq. La section 4 (fixslicing) étudie comment retravailler ce codage pour le rendre plus efficace en temps.
+
+Résumé de l'évaluation
+----------------------
+L'article est assez difficile à lire, surtout l'introduction. Les parties techniques sont plus accessibles, mais laissent néamoins des questions : dans la partie fixslicing, je ne comprends pas l'utilité d'enchaîner les itérations plusieurs dizaines de fois, si 4 itérations correspondent plus où moins à l'identité. Néanmoins, revisiter les algorithmes de chiffrement avec une vision de haut niveau est un travail intéressant, qui pourrait même permettre d'en proposer de nouveaux, qui sait! Je recommande d'accepter cet article, avec quelques modifications / demandes de réponses suggérées dans la partie suivante.
+
+Évaluation détaillée et commentaires aux auteurs
+------------------------------------------------
+Remarque générale : je comprends que l'étude dans cet article a une visée descriptive des protocoles de chiffrement et montre également que les transformations classiques en cryptographie conservent les résultats du chiffrement. Serait-il possible d'énoncer / prouver des propriétés sur le protocole initial, comme par exemple la possibilité de casser le chiffrement avec une probabilité au plus x, sous certaines hypothèses de ressources en temps et en mémoire bornés?
+
+l. 212 : « commutative », je ne comprends pas ce qui est commutatif ici?
+
+l. 271 : $r0'$ n'a pas l'air utile. Est-ce que c'est SKINNY qui décrit ${\tt psi\_}$ de façon aussi précise?
+
+l. 295 : la permutation est fixée, serait-il possible d'utiliser une permutation quelconque?
+
+l. 497 : en quoi est-ce utile d'itérer plus de 4 fois, si 4 itérations donnent presque l'identité? Pourriez vous commenter ce « presque »?
+
+
+
+Comment @A1 by Administrator
+---------------------------------------------------------------------------
+Nous avons le plaisir d'accepter votre papier pour publication au JFLAs. Veuillez s'il vous plait bien prendre en compte les remarques des rapports, en particulier celles qui concernent les plaisanteries qui n'apportent rien à la compréhension du fond du sujet.
