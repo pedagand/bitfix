@@ -64,40 +64,45 @@
 %% -> Our offer: Section 4
 %%   -> shorter Section 5
 
-Anyone who has ever read a cryptography paper knows this for a fact:
-cryptographers are at the top of the academic thought chain. In the
-archetypal symmetric cryptography paper, there is a ``Section 2''
-scene in which cryptographers are bravely waving their most potent
-finite field. In a latter ``Section 4'' scene, the very same
-cryptographers are seen extolling the virtues of some nifty
-\textsc{Arm} Cortex assembly instruction, which takes center stage in
-their hand-crafted, manually optimized implementation. No wonder we
-jealously stash them away in ``zone à régime restrictive''! The rumor
-goes that, behind these padlocked doors, they have developed a set of
-domain-specific techniques to deliver high-throughput software
-implementation of symmetric ciphers. This has been slowly gnawing at
-compiler writers, whose job security is now
-threatened~\citep{bernstein:death-compiler,venkatesh:compiler-security}.
-Luckily for us, every now and then, someone inadvertently let the
-genies out of their Klein bottle and we get to read about the subtle
-art of ``bitslicing''~\citep{biham:DES} and
+Symmetric cryptographic primitives offer a fascinating blend of
+advanced mathematics ---upon which rests their theoretical security
+guarantees--- as well as low-level programming ---upon which rests
+their efficiency but also the absence of side-channel
+attacks~\citep{leroy:side-channel} and resistance to
+fault-injection~\citep{heydemann:fault-attack}.
+%
+In the archetypal symmetric cryptography paper, there is a ``Section
+2'' in which the authors justify the theoretical properties of their
+cipher by appealing to a carefully chosen finite field. In a latter
+``Section 4'', the authors describe their manually optimized
+implementation, usually written directly in
+assembly~\citep{almeida:jasmin}, and report on their performance in
+terms of CPU cycles per encrypted byte.
+%
+Furthermore, cryptographers have developed a set of domain-specific
+techniques to deliver high-throughput software implementation of
+symmetric ciphers, such as ``bitslicing''~\citep{biham:DES} and
 ``fixslicing''~\citep{adominicai:fixslicing-gift,
-  adomnicai:fixslicing-AES-like}.
+  adomnicai:fixslicing-AES-like}. So far, these techniques have
+remained at odds with off-the-shelf compiler
+technology~\citep{bernstein:death-compiler,venkatesh:compiler-security}.
 
-The present work aims at casting these two notions in the language of
-functional programming. We shall see that bitslicing corresponds to a
-run-off-the-mill \emph{data} representation change (in effect, a
-matrix transposition). But this is only half of the work: our ability
-to systematically transform the \emph{code} operating on such
-representation rests on suitably polymorphic definitions:
-parametricity at its best! Fixslicing, on the other hand, will be
-rationalized through equational reasoning over purely functional
-terms. Identifying commuting expressions is of key importance there:
-programming with algebraic structures (rather than untamed arrays of
-bits) will be instrumental!
+The present work aims at casting symmetric cryptographic primitives in
+the language of functional programming. In the process, we shall give
+a formal treatment of bitslicing and fixslicing as systematic
+transformations of functional programs. We shall see that bitslicing
+corresponds to a run-off-the-mill \emph{data} representation change
+(in effect, a matrix transposition). But this is only half of the
+work: our ability to systematically transform the \emph{code}
+operating on such representation rests on suitably polymorphic
+definitions: parametricity at its best. Fixslicing, on the other hand,
+will be rationalized through equational reasoning over purely
+functional terms. Identifying commuting expressions is of key
+importance there: programming with algebraic structures (rather than
+untamed arrays of bits) will be instrumental.
 
 In the long run, our ambition is to offer cryptographers the
-conceptual apparatus to better illuminate their ``Section 4'' scene.
+conceptual apparatus to streamline their ``Section 4''.
 Each and every symmetric cryptosystem should not have to exhibit a
 bitsliced or fixsliced implementation: by just \emph{specifying} the
 cryptosystem in the right framework (abstract yet suitably
@@ -117,14 +122,15 @@ for fixslicing is next on the list.
 %% **** computed off-line
 %% **** off the critical path
 
-As intimidating as cryptographers are, the essence of modern symmetric
-cryptographic primitives can in fact be distilled in a few paragraph. A
+For our present purposes, the essence of modern symmetric
+cryptographic primitives can be distilled in a few paragraph. A
 primitive can be understood as a purely functional program. It takes
-two inputs: the ``cleartext'' and a list of ``round subkeys''
-(which are derived from a single key through a non-performance-critical process called ``key schedule'' that we shall ignore here).
-The output is the ``ciphertext''. The cleartext, the ciphertext and
-each individual round subkeys are processed as ``blocks'' of binary
-data. The block size is of the order of a hundred bits (typically, 64, 128
+two inputs: the ``cleartext'' and a list of ``round subkeys'' (which
+are derived from a single key through a non-performance-critical
+process called ``key schedule'' that we shall ignore here). The output
+is the ``ciphertext''. The cleartext, the ciphertext and each
+individual round subkeys are processed as ``blocks'' of binary data.
+The block size is of the order of a hundred bits (typically, 64, 128
 or 256 bits).
 
 Looking at the process of turning the cleartext into a ciphertext, one
