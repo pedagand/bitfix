@@ -435,6 +435,14 @@ underlying elements). For the sake of completeness, we recall that an
 applicative functor offers the following operations:
 %
 \coqfrom{Algebra}{Applicative}
+%
+subject to an equational theory expressing the fact that applicative
+functors correspond to lax monoidal
+functors~\citep{maclane:working-categorist} over the Cartesian product
+type. Commutativity of an applicative functor \coqe!F! states that
+arguments can be reduced in any order:
+%
+\coqfrom{Algebra}{ApplicativeComm}
 
 
 \subsection{Diffusion}

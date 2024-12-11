@@ -260,6 +260,14 @@ Class CommutativeApplicativeLaws {F} `{F_: Applicative F}  `(ApplicativeLaws F) 
 *)
 
 (*
+Lemma commutative {F} `{F_: Applicative F} :
+(* =ApplicativeComm= *)
+  forall {A B C} (f: A -> B -> C)(xs: F A)(ys: F B),
+    app (map f xs) ys = app (map (fun x y => f y x) ys) xs.
+(* =end= *)
+*)
+
+(*
 #[program, global]
   Instance CommutativeApplicativeLaws_Naperian {Ix F} `{Functor F}`(F_: Naperian F Ix): CommutativeApplicativeLaws (ApplicativeLaws_Naperian F_).
 Next Obligation. Admitted.
