@@ -982,10 +982,9 @@ shifter.
 %% * Propagating phi
 %% ** 4 phi almost converges to identity
 
-Being able to postpone \coqe!phi_! would do us no good if we were
-nonetheless forced to run it anyway. The second, crucial observation
-is that, after only 4 steps, \coqe!phi_! is almost an identity.
-
+Fixslicing rests on the observation that after 4 steps, \coqe!phi_! is
+almost an identity:
+%
 \begin{prop}
   For any state \coqe!rs: Rows.T (Cols.T A)!, we have:
 
@@ -999,9 +998,9 @@ is that, after only 4 steps, \coqe!phi_! is almost an identity.
 \end{prop}
 
 In typical mode of operation, \Skinny{} will perform between 32 and 56
-rounds. Being able to accumulate \coqe!phi_! across chunks of 4
-iterations, we can effectively make them disappear, leaving only a
-\coqe!tau_! step every four iterations.
+rounds. If we can postpone the application of \coqe!phi_! across 4
+rounds, we could effectively make them disappear, leaving only a
+\coqe!tau_! step every four rounds.
 
 %% ** phi commutes with subcells
 %% *** <- subcells is applied pointwise
