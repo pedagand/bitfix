@@ -121,8 +121,7 @@ As intimidating as cryptographers are, the essence of modern symmetric
 cryptographic primitives can in fact be distilled in a few paragraph. A
 primitive can be understood as a purely functional program. It takes
 two inputs: the ``cleartext'' and a list of ``round subkeys''
-(which are derived from a single key through a non-performance
-critical process called ``key schedule'' that we shall ignore here).
+(which are derived from a single key through a non-performance-critical process called ``key schedule'' that we shall ignore here).
 The output is the ``ciphertext''. The cleartext, the ciphertext and
 each individual round subkeys are processed as ``blocks'' of binary
 data. The block size is of the order of a hundred bits (typically, 64, 128
