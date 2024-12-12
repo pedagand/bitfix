@@ -151,7 +151,7 @@ Ciphers are described as operating on a ``state'', initialized to be
 the plaintext and read off at the end as the ciphertext. This state is
 updated by a ``round'' function that is repeated a given number of
 times (of the order of ten iterations). The exact number of iterations
-is a trade-off between latency (less iterations means faster
+is a trade-off between latency (fewer iterations means faster
 computation) and security (more iterations makes for more costly
 cryptanalysis effort). The round function itself is built
 compositionally from 3 components: a key mixing layer (making the
