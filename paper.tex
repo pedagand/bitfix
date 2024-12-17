@@ -113,7 +113,7 @@ optimized code, starting from an high-level description of the cipher.
 This is already the case for bitslicing~\citep{mercadier:PhD}, adding support
 for fixslicing is next on the list.
 
-Note that the ambitions of our work stops at the level of
+Note that the ambitions of our work stop at the level of
 \emph{symmetric} cryptographic \emph{primitives} and, in particular,
 their operational specification. These primitives would typically be
 used (as black-boxes) in cryptographic \emph{protocols}: the analysis
@@ -137,7 +137,7 @@ primitives.
 %% **** off the critical path
 
 For our present purposes, the essence of modern symmetric
-cryptographic primitives can be distilled in a few paragraph. A
+cryptographic primitives can be distilled in a few paragraphs. A
 primitive can be understood as a purely functional program. It takes
 two inputs: the ``plaintext'' and a list of ``round subkeys'' (which
 are derived from a single key through a non-performance-critical
@@ -151,7 +151,7 @@ Ciphers are described as operating on a ``state'', initialized to be
 the plaintext and read off at the end as the ciphertext. This state is
 updated by a ``round'' function that is repeated a given number of
 times (of the order of ten iterations). The exact number of iterations
-is a trade-off between latency (less iterations means faster
+is a trade-off between latency (fewer iterations means faster
 computation) and security (more iterations makes for more costly
 cryptanalysis effort). The round function itself is built
 compositionally from 3 components: a key mixing layer (making the
@@ -166,7 +166,7 @@ correlations across the whole output block).
 %% **** only register spilling
 %% *** -> combinational circuits
 
-To avoid side-channel attack (for example, based on
+To avoid side-channel attacks (for example, based on
 timing~\citep{bernstein:timing-attack-AES}) over software
 implementations, this pipeline is implemented as a purely
 combinational circuit. In particular, we are forbidden from performing
@@ -821,7 +821,7 @@ quantities here.
 % a 32 bits word would be borderline unethical.
 
 Storing only 16 bits in a 32 bits word (on \textsc{Arm} Cortex M)
-remains sub-optimal. We can further increase register usage and
+remains suboptimal. We can further increase register usage and
 instantly double throughput by processing two blocks at the same
 time. To this end, we introduce a new Naperian functor,
 \coqe!Double.T!, indexed by the two elements set \coqe!Fst!  and
@@ -1026,7 +1026,7 @@ Similarly and for the same reason, \coqe!phi_! commutes with
   \coqfrom{Skinny/FixsliceProof}{comm_phi_add_round_key}
 \end{prop}
 
-Note that we have to transform the input key before hand, so as to
+Note that we have to transform the input key beforehand, so as to
 keep both blocks aligned. In particular, this means that we do not
 have to correct the first round subkey, we will have to apply
 \coqe!inv_phi! to the second round subkey, \coqe!iter 2 inv_phi! to
